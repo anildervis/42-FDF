@@ -14,10 +14,11 @@ void setup(t_fdf *data)
     data->matrix_min = 2147483647;
     data->max_color = 0x2978ff;
     data->min_color = 0x28ff5a;
-    data->scale = 5;
+    data->scale = 3;
     data->rotation_value_x = 0.5;
     data->rotation_value_y = 0.5;
     data->rotation_value_z = 0.5;
+    data->heigth = 0.01;
 }
 
 // ptos -> plane to spherical
@@ -30,13 +31,13 @@ void ptos(t_fdf *data, t_dot **matrix)
     int i = 0;
     int j = 0;
     double y_angle = pi / (data->matrix_heigth - 1);
-    double xz_angle = 2 * pi / (data->matrix_width);
+    double xz_angle = 2 * pi / (data->matrix_width - 1);
     while (j < data->matrix_heigth)
     {
         i = 0;
         while (i < data->matrix_width)
         {
-            heigth = radius + matrix[j][i].z;
+            heigth = radius + matrix[j][i].z * data->heigth;
             matrix[j][i].y = (-1) * heigth * cos(y_angle * j);
             matrix[j][i].x = heigth * sin(y_angle * j) * (-sin(xz_angle * i));
             matrix[j][i].z = heigth * sin(y_angle * j) * (-cos(xz_angle * i));

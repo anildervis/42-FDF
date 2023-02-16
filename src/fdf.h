@@ -29,7 +29,7 @@ typedef struct s_fdf
     int translation_x;
     int translation_y;
     t_dot **matrix;
-    float zoom;
+    double zoom;
     void *mlx_ptr;
     void *win_ptr;
     int matrix_max;
@@ -39,7 +39,8 @@ typedef struct s_fdf
     double rotation_value_x;
     double rotation_value_y;
     double rotation_value_z;
-    int scale;
+    double scale;
+    double heigth;
 }   t_fdf;
 
 //----------data_read.c-------------
@@ -48,13 +49,15 @@ t_dot **read_data(t_fdf *data, char *path);
 void ft_maxmin(int val, t_fdf *data);
 
 //-------------draw.c---------------
-int *gradient(int startcolor, int endcolor, double len, int pix);
+int gradient(int startcolor, int endcolor, double len, int pix);
 void draw_line(t_dot a, t_dot b, t_fdf *data);
 void isometric(t_dot *dot, double angle);
 void print_all(t_dot **matrix, t_fdf *data);
 
 //-------------math.c---------------
-void rotation_x(t_dot **matrix, t_fdf *data, int negative);
+void	rotate_x(t_dot **matrix, t_fdf *data, double alpha);
+void	rotate_z(t_dot **matrix, t_fdf *data, double alpha);
+// void rotation_x(t_dot **matrix, t_fdf *data, int negative);
 void rotation_y(t_dot **matrix, t_fdf *data, int negative);
 void rotation_z(t_dot **matrix, t_fdf *data, int negative);
 void translation(t_fdf *data, int axis);

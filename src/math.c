@@ -1,48 +1,91 @@
 #include "fdf.h"
 
-int compare_float(double x, double y)
+void	rotate_x(t_dot **matrix, t_fdf *data, double alpha)
 {
-    double epsilon = 0.001f;
-    if(fabs(x - y) < epsilon)
-        return 1; //they are same
-    return 0; //they are not same
-}
+    int i;
+    int j;
+	double	prev_y;
 
-void rotation_x(t_dot **matrix, t_fdf *data, int negative)
-{
-    int x;
-    int y;
-    double yz_angle;
-    double radius;
-    double bir = 2 * atan(1);
+    j = 0;
 
-    y = 0;
-    while (y < data->matrix_heigth)
+    while (j < data->matrix_heigth)
     {
-        x = 0;
-        while (x < data->matrix_width)
+        i = 0;
+        while (i < data->matrix_width)
         {
-            matrix[y][x].y *= -1;
-            radius = hypotenuse(0.0, (matrix[y][x].y), (matrix[y][x].z));
-            if (compare_float(matrix[y][x].z, 0.0) && matrix[y][x].y > 0.0)
-                yz_angle = bir;
-            else if (compare_float(matrix[y][x].z, 0.0) && matrix[y][x].y < 0.0)
-                yz_angle = 3 * bir;
-            else if (!compare_float(matrix[y][x].z, 0.0) && !compare_float(matrix[y][x].y, 0.0))
-                yz_angle = asin(matrix[y][x].y / radius);
-            else
-                yz_angle = 0;
-            if (matrix[y][x].z < 0.0)
-                yz_angle = (2 * bir) - yz_angle;
-            yz_angle += data->rotation_value_x * negative;
-            matrix[y][x].z = radius * cos(yz_angle);
-            matrix[y][x].y = radius * sin(yz_angle);
-            matrix[y][x].y *= -1;
-            x++;
+            prev_y = matrix[j][i].y;
+	        matrix[j][i].y = prev_y * cos(alpha) + (matrix[j][i].z) * sin(alpha);
+	        matrix[j][i].z = -prev_y * sin(alpha) + (matrix[j][i].z) * cos(alpha);
+            i++;
         }
-        y++;
+        j++;
     }
 }
+
+// static void	rotate_y(int *x, int *z, double beta)
+// {
+// 	int	prev_x;
+
+// 	prev_x = *x;
+// 	*x = prev_x * cos(beta) + (*z) * sin(beta);
+// 	*z = -prev_x * sin(beta) + (*z) * cos(beta);
+// }
+
+void	rotate_z(t_dot **matrix, t_fdf *data, double gamma)
+{
+    int i = 0;
+    int j = 0;
+ 	double	prev_x;
+ 	double prev_y;
+
+    while (j < data->matrix_heigth)
+    {
+        i = 0;
+        while (i < data->matrix_width)
+        {
+            prev_x = matrix[j][i].x;
+            prev_y = matrix[j][i].y;
+            matrix[j][i].x = prev_x * cos(gamma) - prev_y * sin(gamma);
+            matrix[j][i].y = prev_x * sin(gamma) + prev_y * cos(gamma);
+            i++;
+        }
+        j++;
+    }
+}
+
+// void rotation_x(t_dot **matrix, t_fdf *data, int negative)
+// {
+//     int x;
+//     int y;
+//     double yz_angle;
+//     double radius;
+//     double bir = 2 * atan(1);
+
+//     y = 0;
+//     while (y < data->matrix_heigth)
+//     {
+//         x = 0;
+//         while (x < data->matrix_width)
+//         {
+//             matrix[y][x].y *= -1;
+//             radius = hypotenuse(0.0, (matrix[y][x].y), (matrix[y][x].z));
+//             if (radius == 0)
+//                 yz_angle = 0;
+//             else
+//                 yz_angle = asin(matrix[y][x].y / radius);
+//             if (matrix[y][x].z < 0.0)
+//                 yz_angle = (2 * bir) - yz_angle;
+//             yz_angle += data->rotation_value_x * negative;
+//             matrix[y][x].z = radius * cos(yz_angle);
+//             matrix[y][x].y = radius * sin(yz_angle);
+//             matrix[y][x].y *= -1;
+//             x++;
+//         }
+//         y++;
+//     }
+// }
+
+
 
 void rotation_y(t_dot **matrix, t_fdf *data, int negative)
 {
@@ -59,14 +102,10 @@ void rotation_y(t_dot **matrix, t_fdf *data, int negative)
         while (x < data->matrix_width)
         {
             radius = hypotenuse((matrix[y][x].x), 0.0, (matrix[y][x].z));
-            if (compare_float(matrix[y][x].x, 0.0) && matrix[y][x].z > 0.0)
-                xz_angle = bir;
-            else if (compare_float(matrix[y][x].x, 0.0) && matrix[y][x].z < 0.0)
-                xz_angle = 3 * bir;
-            else if (!compare_float(matrix[y][x].x, 0.0) && !compare_float(matrix[y][x].z, 0.0))
-                xz_angle = asin(matrix[y][x].z / radius);
-            else
+            if (radius == 0)
                 xz_angle = 0;
+            else
+                xz_angle = asin(matrix[y][x].z / radius);
             if (matrix[y][x].x < 0.0)
                 xz_angle = (2 * bir) - xz_angle;
             xz_angle += data->rotation_value_y * negative;
@@ -78,65 +117,71 @@ void rotation_y(t_dot **matrix, t_fdf *data, int negative)
     }
 }
 
-void rotation_z(t_dot **matrix, t_fdf *data, int negative)
-{
-    int x;
-    int y;
-    double xy_angle;
-    double radius;
-    double bir = 2 * atan(1);
+// void rotation_z(t_dot **matrix, t_fdf *data, int negative)
+// {
+//     int x;
+//     int y;
+//     double xy_angle;
+//     double radius;
+//     double bir = 2 * atan(1);
 
-    y = 0;
-    while (y < data->matrix_heigth)
-    {
-        x = 0;
-        while (x < data->matrix_width)
-        {
-            matrix[y][x].y *= -1.0;
-            radius = hypotenuse((matrix[y][x].x), (matrix[y][x].y), 0.0);
-            // if (compare_float(matrix[y][x].x, 0.0) && matrix[y][x].y > 0.0)
-            //     xy_angle = bir;
-            // else if (compare_float(matrix[y][x].x, 0.0) && matrix[y][x].y < 0.0)
-            //     xy_angle = 3 * bir;
-            // else if (!compare_float(matrix[y][x].x, 0.0) && !compare_float(matrix[y][x].y, 0.0))
-            if (radius == 0)
-                xy_angle = 0;
-            else
-                xy_angle = asin(matrix[y][x].y / radius);
-            // else
-            //     xy_angle = 0;
-            if (matrix[y][x].x < 0.0)
-                xy_angle = (2 * bir) - xy_angle;
-            xy_angle += data->rotation_value_z * negative;
-            matrix[y][x].x = radius * cos(xy_angle);
-            matrix[y][x].y = radius * sin(xy_angle);
-            matrix[y][x].y *= -1.0;
-            x++;
-        }
-        y++;
-    }
-}
-
-// compare float yerine == koymak
-// xy yz xz angle değerlerini teker teker hesaplamak yerine t_dot içerisinde tutmak
-// x y z angle değerlerine göre hesaplamak ve koordinat değerleri yerine kullanmak
+//     y = 0;
+//     while (y < data->matrix_heigth)
+//     {
+//         x = 0;
+//         while (x < data->matrix_width)
+//         {
+//             matrix[y][x].y *= -1.0;
+//             radius = hypotenuse((matrix[y][x].x), (matrix[y][x].y), 0.0);
+//             if (radius == 0)
+//                 xy_angle = 0;
+//             else
+//                 xy_angle = asin(matrix[y][x].y / radius);
+//             if (matrix[y][x].x < 0.0)
+//                 xy_angle = (2 * bir) - xy_angle;
+//             xy_angle += data->rotation_value_z * negative;
+//             matrix[y][x].x = radius * cos(xy_angle);
+//             matrix[y][x].y = radius * sin(xy_angle);
+//             matrix[y][x].y *= -1.0;
+//             x++;
+//         }
+//         y++;
+//     }
+// }
 
 void translation(t_fdf *data, int axis)
 {
     if (axis == 123)
-        data->translation_x -= data->window_width / 20;
+        data->translation_x -= 50;
     else if (axis == 124)
-        data->translation_x += data->window_width / 20;
+        data->translation_x += 50;
     else if (axis == 125)
-        data->translation_y += data->window_heigth / 20;
+        data->translation_y += 50;
     else if (axis == 126)
-        data->translation_y -= data->window_heigth / 20;
+        data->translation_y -= 50;
 }
 
 void zoom(t_fdf *data, int val)
 {
+    int i;
+    int j;
+
     if (val == 7)
-        data->zoom *= 1.1;
+        data->zoom = 1.1;
     else
-        data->zoom *= 0.9;
+        data->zoom = 0.9;
+
+    j = 0;
+    while (j < data->matrix_heigth)
+    {
+        i = 0;
+        while (i < data->matrix_width)
+        {
+            data->matrix[j][i].x *= data->zoom;
+            data->matrix[j][i].y *= data->zoom;
+            data->matrix[j][i].z *= data->zoom;
+            i++;
+        }
+        j++;
+    }
 }
