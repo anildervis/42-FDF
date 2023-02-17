@@ -9,19 +9,21 @@ int	key_hook(int keycode, t_fdf *data)
 	// esc ile çıkmayı ekle
 	// ekleyince satır sayısını aşarsak rotation işlemlerini 
 	// keycode atayarak gerçekleştirebilirsin
+    
+    // belirlenen keycode ile color değerlerini sonradan değiştirebilmemiz lazım
     mlx_clear_window(data->mlx_ptr, data->win_ptr);
     if (keycode == 12)
-        rotate_z(data->matrix, data, -0.01);
+        rotation_z(data->matrix, data, -1);
     else if (keycode == 14)
-        rotate_z(data->matrix, data, 0.03);
+        rotation_z(data->matrix, data, 1);
     else if (keycode == 0)
         rotation_y(data->matrix, data, -1);
     else if (keycode == 2)
         rotation_y(data->matrix, data, 1);
     else if (keycode == 1)
-        rotate_x(data->matrix, data, -0.01);
+        rotation_x(data->matrix, data, -1);
     else if (keycode == 13)
-        rotate_x(data->matrix, data, 0.01);
+        rotation_x(data->matrix, data, 1);
 	else if (keycode == 123 || keycode == 124 || keycode == 125 || keycode == 126)
     {
         seconds1 = clock();
@@ -37,4 +39,11 @@ int	key_hook(int keycode, t_fdf *data)
     seconds2 = clock();
     printf("after print_all %6.3lu\n", seconds2 - seconds1);
 	return (0);
+}
+
+// isometric yerine 30 derecelik açı konulabilir
+void	isometric(t_dot *dot, double angle)
+{
+	dot->x = (dot->x - dot->y) * cos(angle);
+	dot->y = (dot->x + dot->y) * sin(angle) - dot->z;
 }
