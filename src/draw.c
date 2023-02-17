@@ -64,6 +64,8 @@ void draw_line(t_dot a, t_dot b, t_fdf *data)
         color = gradient(a.color, b.color, max_step, step);
         if (data->pixel_bits != 32)
             color = mlx_get_color_value(data->mlx_ptr, color);
+        if (x_point < 0 || x_point > data->window_width || y_point < 0 || y_point > data->window_heigth)
+            break;
         put_pixel(data, x_point, y_point, color);
         x_point += x_step;
         y_point += y_step;
