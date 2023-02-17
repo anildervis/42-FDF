@@ -1,5 +1,31 @@
 #include "fdf.h"
 
+void colorize(t_fdf *data, t_dot **matrix)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < data->matrix_heigth)
+    {
+        j = 0;
+        while (j < data->matrix_width)
+        {
+            matrix[i][j].color = gradient(data->min_color, data->max_color, data->matrix_max - data->matrix_min, matrix[i][j].z - data->matrix_min);
+            j++;
+        }
+        i++;
+    }
+}
+
+void ft_maxmin(int val, t_fdf *data)
+{
+    if (val > data->matrix_max)
+        data->matrix_max = val;
+    if (val < data->matrix_min)
+        data->matrix_min = val;
+}
+
 t_dot **get_matrix(t_fdf *data, char *path)
 {
     int i;
@@ -24,14 +50,6 @@ t_dot **get_matrix(t_fdf *data, char *path)
         tmp[i] = (t_dot *)malloc(sizeof(t_dot) * (data->matrix_width));
     close(fd);
     return (tmp);
-}
-
-void ft_maxmin(int val, t_fdf *data)
-{
-    if (val > data->matrix_max)
-        data->matrix_max = val;
-    if (val < data->matrix_min)
-        data->matrix_min = val;
 }
 
 t_dot **read_data(t_fdf *data, char *path)
@@ -65,5 +83,6 @@ t_dot **read_data(t_fdf *data, char *path)
         free(line);
     }
     close (fd);
+    colorize(data, matrix);
     return (matrix);
 }
