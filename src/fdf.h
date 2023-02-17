@@ -32,6 +32,11 @@ typedef struct s_fdf
     double zoom;
     void *mlx_ptr;
     void *win_ptr;
+    void *img_ptr;
+    int pixel_bits;
+    int line_bytes;
+    int endian;
+    char *buffer;
     int matrix_max;
     int matrix_min;
     int max_color;
@@ -44,20 +49,24 @@ typedef struct s_fdf
 }   t_fdf;
 
 //----------data_read.c-------------
+void colorize(t_fdf *data, t_dot **matrix);
+void ft_maxmin(int val, t_fdf *data);
 t_dot **get_matrix(t_fdf *data, char *path);
 t_dot **read_data(t_fdf *data, char *path);
-void ft_maxmin(int val, t_fdf *data);
 
 //-------------draw.c---------------
-int gradient(int startcolor, int endcolor, double len, int pix);
+int gradient(int start, int end, double len, int step);
+void put_pixel(t_fdf *data, int x_point, int y_point, int color);
 void draw_line(t_dot a, t_dot b, t_fdf *data);
-void isometric(t_dot *dot, double angle);
+void put_background(t_fdf *data);
 void print_all(t_dot **matrix, t_fdf *data);
 
+//-----------geometry.c-------------
+void ptos(t_fdf *data, t_dot **matrix);
+void stop(t_dot **matrix, t_fdf *data);
+
 //-------------math.c---------------
-void	rotate_x(t_dot **matrix, t_fdf *data, double alpha);
-void	rotate_z(t_dot **matrix, t_fdf *data, double alpha);
-// void rotation_x(t_dot **matrix, t_fdf *data, int negative);
+void rotation_x(t_dot **matrix, t_fdf *data, int negative);
 void rotation_y(t_dot **matrix, t_fdf *data, int negative);
 void rotation_z(t_dot **matrix, t_fdf *data, int negative);
 void translation(t_fdf *data, int axis);
