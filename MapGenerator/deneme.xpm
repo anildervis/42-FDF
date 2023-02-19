@@ -1,0 +1,12 @@
+/* XPM */
+static char *bd89ebd0b91047688b49b2ba044c7e03BfjhCki6xN9RR1CN[] = {
+/* columns rows colors chars-per-pixel */
+"3 3 4 2 ",
+" t c #575756",
+".t c #9C9B9B",
+"Xt c #515150",
+"ot c #525251",
+/* pixels */,
+" t.t",
+"Xtot",
+" tXt",
