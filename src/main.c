@@ -3,10 +3,15 @@
 
 void setup(t_fdf *data)
 {
+    data->menu_width = 300;
+    data->menu_heigth = 400;
+    data->menu_x = 0;
+    data->menu_y = 0;
     data->window_heigth = 1000;
     data->window_width = 1000;
     data->mlx_ptr = mlx_init();
     data->win_ptr = mlx_new_window(data->mlx_ptr, data->window_heigth, data->window_width, "FDF");
+    data->menu_ptr = mlx_xpm_file_to_image(data->mlx_ptr, "./src/menu.xpm", &(data->menu_width), &(data->menu_heigth));
     data->img_ptr = mlx_new_image(data->mlx_ptr, data->window_heigth, data->window_width);
     data->zoom = 1;
     data->translation_x = 0;
@@ -47,7 +52,7 @@ int main(int argc, char **argv)
     data->matrix = matrix;
     ptos(data, matrix);
     print_all(matrix, data);
-    // print menu
     mlx_hook(data->win_ptr, 2, 1L<<0, key_hook, data);
+    mlx_hook(data->win_ptr, 4, 1L<<0, mouse_hook, data);
     mlx_loop(data->mlx_ptr);
 }

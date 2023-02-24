@@ -3,15 +3,12 @@
 
 int	key_hook(int keycode, t_fdf *data)
 {
-    clock_t seconds1 = 0;
-    clock_t seconds2 = 0;
-    static int omg = 1;
 	// esc ile çıkmayı ekle
 	// ekleyince satır sayısını aşarsak rotation işlemlerini 
 	// keycode atayarak gerçekleştirebilirsin
     
     // belirlenen keycode ile color değerlerini sonradan değiştirebilmemiz lazım
-    mlx_clear_window(data->mlx_ptr, data->win_ptr);
+    put_background(data);
     if (keycode == 12)
         rotation_z(data->matrix, data, -1);
     else if (keycode == 14)
@@ -25,20 +22,29 @@ int	key_hook(int keycode, t_fdf *data)
     else if (keycode == 13)
         rotation_x(data->matrix, data, 1);
 	else if (keycode == 123 || keycode == 124 || keycode == 125 || keycode == 126)
-    {
-        seconds1 = clock();
-        printf("before translation %d\n", ++omg);
         translation(data, keycode);
-        seconds2 = clock();
-        printf("after translation %6.3lu\n", seconds2 - seconds1);
-    }
 	else if (keycode == 6 || keycode == 7)
         zoom(data, keycode);
-    seconds1 = clock();
     print_all(data->matrix, data);
-    seconds2 = clock();
-    printf("after print_all %6.3lu\n", seconds2 - seconds1);
 	return (0);
+}
+
+int mouse_hook(int mouse_code, t_fdf *data)
+{
+    int x;
+    int y;
+    int k = mlx_mouse_get_pos(data->win_ptr, &x, &y);
+    printf("k\n");
+    if (mouse_code == 1)
+    {
+        if (x < 300 && y < 400)
+        {
+            data->menu_x = -250;
+            data->menu_y = 0;
+        }
+    }
+    return (0);
+    print_all(data->matrix, data);
 }
 
 // isometric yerine 30 derecelik açı konulabilir

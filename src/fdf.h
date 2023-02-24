@@ -46,6 +46,11 @@ typedef struct s_fdf
     double rotation_value_z;
     double scale;
     double heigth;
+    void *menu_ptr;
+    int menu_width;
+    int menu_heigth;
+    int menu_x;
+    int menu_y;
 }   t_fdf;
 
 //----------data_read.c-------------
@@ -74,5 +79,6 @@ void zoom(t_fdf *data, int val);
 
 //-----------key_hooks.c------------
 int	key_hook(int keycode, t_fdf *data);
+int mouse_hook(int mouse_code, t_fdf *data);
 
 #endif

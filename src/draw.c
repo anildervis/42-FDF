@@ -86,8 +86,13 @@ void put_background(t_fdf *data)
         color = mlx_get_color_value(data->mlx_ptr, color);
     while (y < data->window_heigth) // img struct yapısı ile image için size bilgileri, başlangıç koordinati vb. tutulabilir 
     {
+        x = 0;
         while (x < data->window_width)
+        {
             put_pixel(data, x, y, color);
+            x++;
+        }
+        y++;
     } 
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_ptr, 0, 0);
 }
@@ -97,8 +102,8 @@ void print_all(t_dot **matrix, t_fdf *data)
     int x;
     int y;
 
-    put_background(data);
     y = 0;
+    put_background(data);
     while (y < data->matrix_heigth)
     {
         x = 0;
@@ -116,4 +121,5 @@ void print_all(t_dot **matrix, t_fdf *data)
         y++;
     }
     mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img_ptr, 0, 0);
+    mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->menu_ptr, data->menu_x, data->menu_y);
 }

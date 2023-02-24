@@ -5,7 +5,6 @@
 // ptos -> plane to spherical
 void ptos(t_fdf *data, t_dot **matrix)
 {
-    mlx_clear_window(data->mlx_ptr, data->win_ptr);
     double pi = 3.14159265359;
     double radius = data->matrix_heigth / 2;
     double heigth;
