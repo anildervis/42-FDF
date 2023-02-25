@@ -52,7 +52,7 @@ void draw_line(t_dot a, t_dot b, t_fdf *data)
     int color;
 
     step = 0;
-    x_point = (a.x + data->window_width / 2 + data->translation_x);
+    x_point = (a.x + (data->window_width - data->menu_width) / 2 + data->translation_x);
     y_point = (a.y + data->window_heigth / 2 + data->translation_y);
     x_step = (b.x - a.x);
     y_step = (b.y - a.y);

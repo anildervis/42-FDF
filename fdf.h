@@ -69,14 +69,14 @@ void print_all(t_dot **matrix, t_fdf *data);
 
 //-----------geometry.c-------------
 void ptos(t_fdf *data, t_dot **matrix);
-void stop(t_fdf *data, t_dot **matrix);
+void stop(t_fdf *data, t_dot **matrix, int iso);
 
 //-------------math.c---------------
 void rotation_x(t_dot **matrix, t_fdf *data, int negative);
 void rotation_y(t_dot **matrix, t_fdf *data, int negative);
 void rotation_z(t_dot **matrix, t_fdf *data, int negative);
 void translation(t_fdf *data, int axis);
-void zoom(t_fdf *data, int val);
+void zoom(t_fdf *data, float val);
 
 //-----------key_hooks.c------------
 int	key_hook(int keycode, t_fdf *data);
