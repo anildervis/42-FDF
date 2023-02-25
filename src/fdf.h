@@ -15,6 +15,7 @@ typedef struct s_dot
     double x;
     double y;
     double z;
+    double heigth;
     int color;
 }   t_dot;
 
@@ -44,41 +45,45 @@ typedef struct s_fdf
     double rotation_value_x;
     double rotation_value_y;
     double rotation_value_z;
-    double scale;
     double heigth;
     void *menu_ptr;
     int menu_width;
     int menu_heigth;
     int menu_x;
     int menu_y;
+    int is_O;
 }   t_fdf;
 
 //----------data_read.c-------------
-void colorize(t_fdf *data, t_dot **matrix);
-void ft_maxmin(int val, t_fdf *data);
-t_dot **get_matrix(t_fdf *data, char *path);
-t_dot **read_data(t_fdf *data, char *path);
+void	colorize(t_fdf *data, t_dot **matrix);
+void	ft_maxmin(int val, t_fdf *data);
+t_dot	**get_matrix(t_fdf *data, char *path);
+void	fill_matrix(t_fdf *data, t_dot **matrix, int fd);
+t_dot	**read_data(t_fdf *data, char *path);
 
 //-------------draw.c---------------
-int gradient(int start, int end, double len, int step);
-void put_pixel(t_fdf *data, int x_point, int y_point, int color);
-void draw_line(t_dot a, t_dot b, t_fdf *data);
-void put_background(t_fdf *data);
-void print_all(t_dot **matrix, t_fdf *data);
+int		gradient(int start, int end, double len, int step);
+void	put_pixel(t_fdf *data, int x_point, int y_point, int color);
+void	draw_line(t_dot a, t_dot b, t_fdf *data);
+void	put_background(t_fdf *data);
+void	print_all(t_dot **matrix, t_fdf *data);
 
 //-----------geometry.c-------------
-void ptos(t_fdf *data, t_dot **matrix);
-void stop(t_dot **matrix, t_fdf *data);
+void	ptos(t_fdf *data, t_dot **matrix);
+void	stop(t_fdf *data, t_dot **matrix, int iso);
 
 //-------------math.c---------------
-void rotation_x(t_dot **matrix, t_fdf *data, int negative);
-void rotation_y(t_dot **matrix, t_fdf *data, int negative);
-void rotation_z(t_dot **matrix, t_fdf *data, int negative);
-void translation(t_fdf *data, int axis);
-void zoom(t_fdf *data, int val);
+void	rotation_x(t_dot **matrix, t_fdf *data, int negative);
+void	rotation_y(t_dot **matrix, t_fdf *data, int negative);
+void	rotation_z(t_dot **matrix, t_fdf *data, int negative);
+void	translation(t_fdf *data, int axis);
+void	zoom(t_fdf *data, float val);
 
 //-----------key_hooks.c------------
-int	key_hook(int keycode, t_fdf *data);
-int mouse_hook(int mouse_code, t_fdf *data);
+void	func_rotate(int keycode, t_fdf *data);
+void	func_move(int keycode, t_fdf *data);
+void	func_geometry(int keycode, t_fdf *data);
+int		terminate(t_fdf *meta);
+int		key_hook(int keycode, t_fdf *data);
 
 #endif
