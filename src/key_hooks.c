@@ -37,9 +37,9 @@ void	func_geometry(int keycode, t_fdf *data)
 		stop(data, data->matrix, 1);
 }
 
-int	terminate(t_fdf *meta)
+int	terminate(t_fdf *data)
 {
-	mlx_destroy_window(meta->mlx_ptr, meta->win_ptr);
+	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
 	exit(0);
 }
 

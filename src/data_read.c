@@ -31,6 +31,8 @@ t_dot	**get_matrix(t_fdf *data, char *path)
 
 	i = 0;
 	fd = open(path, O_RDONLY, 0);
+	if (fd < 0)
+		exit(1);
 	line = get_next_line(fd);
 	data->matrix_width = ft_wordcount(line, ' ');
 	while(line)
